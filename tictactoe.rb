@@ -50,9 +50,9 @@ end
 
 def check_winner(board)
   WINNING_COMBOS.each do |set|
-    if board[set[0]] == 'x' && board[set[1]] == 'x' && board[set[2]] == 'x'
+    if board.values_at(set[0], set[1], set[2]).count('x') == 3
       return 'player'
-    elsif board[set[0]] == 'o' && board[set[1]] == 'o' && board[set[2]] == 'o'
+    elsif board.values_at(set[0], set[1], set[2]).count('o') == 3
       return 'computer'
     end
   end
