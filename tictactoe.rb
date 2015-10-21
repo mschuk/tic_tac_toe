@@ -5,7 +5,7 @@ WINNING_COMBOS = [[1,2,3],[4,5,6],[7,8,9], [1,4,7], [2,5,8], [3,6,9], [1,5,9], [
 
 def initialize_board
   board = {}
-  (1..9).each {|num| board[num] = ''}
+  (1..9).each {|num| board[num] = ' '}
   board
 end
 
@@ -18,14 +18,18 @@ def print_board(board)
   puts "  #{board[7]}  | #{board[8]}  | #{board[9]}   "
 end
 
+def available_moves(board)
+  board.select { |num, mark| mark == ' '}
+end
+
 def two_in_a_row(board)
   WINNING_COMBOS.each do |set|
-    board_array = [board[set[0]], board[set[1]], board[set[2]]]
-    if board_array.count('x') == 2 && board_array.count('') == 1
-      empty_match = board_array.index('')
+    board_array = board.values_at(set[0], set[1], set[2])
+    if board_array.count('x') == 2 && board_array.count(' ') == 1
+      empty_match = board_array.index(' ')
       return set[empty_match]
-    elsif board_array.count('o') == 2 && board_array.count('') == 1
-      empty_match = board_array.index('')
+    elsif board_array.count('o') == 2 && board_array.count(' ') == 1
+      empty_match = board_array.index(' ')
       return set[empty_match]
     end
   end
@@ -34,12 +38,12 @@ end
 
 def computer_move(board)
   best_move = two_in_a_row(board)
-  if board[5] == ''
+  if board[5] == ' '
     board[5] = 'o'
   elsif best_move
     board[best_move] = 'o'
   else
-    possible_moves = board.select {|num, mark| mark == ''}
+    possible_moves = available_moves(board)
     board[possible_moves.keys.sample] = 'o'
   end
 end
@@ -60,7 +64,7 @@ def player_move(num, board)
 end
 
 def check_board?(board)
-  board_keys = board.select { |num, mark| mark == ''}
+  board_keys = available_moves(board)
   board_keys.empty?
 end
 
@@ -75,7 +79,7 @@ loop do
     puts 'Pick a number 1-9 to mark the board'
     num = gets.chomp.to_i
 
-    available_nums = board.select { |num, mark| mark == ''}
+    available_nums = available_moves(board)
     until available_nums.include?(num)
       puts 'That number is not available.  Pick a number on the board that is empty.'
       num = gets.chomp.to_i
