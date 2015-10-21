@@ -1,4 +1,5 @@
 # Tic Tac Toe game
+require 'pry'
 
 WINNING_COMBOS = [[1,2,3],[4,5,6],[7,8,9], [1,4,7], [2,5,8], [3,6,9], [1,5,9], [3,5,7]]
 
@@ -20,10 +21,12 @@ end
 def two_in_a_row(board)
   WINNING_COMBOS.each do |set|
     board_array = [board[set[0]], board[set[1]], board[set[2]]]
-    if board_array.count('o') == 2 && board_array.count('') == 1
-      return board.index('')
-    elsif board_array.count('x') == 2 && board_array.count('') == 1
-      return board.index('')
+    if board_array.count('x') == 2 && board_array.count('') == 1
+      empty_match = board_array.index('')
+      return set[empty_match]
+    elsif board_array.count('o') == 2 && board_array.count('') == 1
+      empty_match = board_array.index('')
+      return set[empty_match]
     end
   end
   nil
@@ -80,10 +83,13 @@ loop do
 
     player_move(num, board)
     winner = check_winner(board)
-    computer_move(board)
-    winner = check_winner(board)
+    unless winner
+      computer_move(board)
+      winner = check_winner(board)
+    end
     board_full = check_board?(board)
     print_board(board)
+
 
   end until winner || board_full
 
