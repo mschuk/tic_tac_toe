@@ -79,13 +79,13 @@ loop do
     end
 
     player_move(num, board)
-    winner = check_winner(board)
+    player_winner = check_winner(board)
     computer_move(board)
-    winner = check_winner(board)
+    board_winner = check_winner(board)
     board_full = check_board?(board)
     print_board(board)
 
-  end until winner || board_full
+  end until player_winner || board_winner || board_full
 
   if winner == 'player'
     puts 'You won!'
