@@ -31,7 +31,6 @@ end
 
 def computer_move(board)
   best_move = two_in_a_row(board)
-  binding.pry
   if board[5] == ''
     board[5] = 'o'
   elsif best_move
